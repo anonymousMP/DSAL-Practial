@@ -1,0 +1,78 @@
+*File Handling*
+#include <iostream>
+#include <fstream>
+using namespace std;
+class student
+{
+ public:
+ int rollno;
+ char name[20];
+ void getdata()
+ {
+ cout<<"\n Enter Data...";
+ cout<<"Rollno: ";
+ cin>>rollno;
+ cout<<"Name: ";
+ cin>>name;
+ }
+
+
+ void putdata()
+ {
+ cout<<"Rollno: "<<rollno<<"\tName: "<<name<<"\n";
+ }
+}stud1;
+int main()
+{
+ //clrscr();
+ int ch, count=0;
+ fstream fio;
+ fio.open("marks.dat",ios::out);
+
+ do
+ {
+ stud1.getdata();
+ count++;
+ fio.write((char*)&stud1,sizeof(stud1));
+ cout<<"Record added to the file\n";
+ cout<<"\nWant to enter more ? (1/0)..";
+ cin>>ch;
+ }while(ch==1);
+ fio.close();
+ int temp=count;
+
+ fio.open("marks.dat", ios::in);
+ fio.seekg(0,ios::beg);
+
+ while(count>0)
+ {
+ fio.read((char*)&stud1,sizeof(stud1));
+ {
+ stud1.putdata();
+ count--;
+ }
+ }
+fio.close();
+int roll1,flag=0;
+count=temp;
+fio.open("marks.dat", ios::in);
+fio.seekg(0,ios::beg);
+cout<<"\nEnter the roll you want to search\n";
+cin>>roll1;
+while(count>0)
+ {
+ fio.read((char*)&stud1,sizeof(stud1));
+ if(stud1.rollno==roll1)
+ {
+ cout<<"\nRecord is found";
+ stud1.putdata();
+ flag=1;
+ break;
+ }
+ else
+ count--;
+ }
+if(flag==0)
+ cout<<"\nRecord not found";
+fio.close();
+ }
